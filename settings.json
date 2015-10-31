@@ -1,0 +1,46 @@
+{
+  "mappings": {
+    "books": {
+      "properties": {
+        "title": {
+          "type": "string",
+          "index_analyzer": "ngram_index",
+          "search_analyzer": "ngram_search"
+        },
+        "description": {
+          "type": "string",
+          "index_analyzer": "ngram_index",
+          "search_analyzer": "ngram_search"
+        },
+        "author": {
+          "type": "string",
+          "index_analyzer": "ngram_index",
+          "search_analyzer": "ngram_search"
+        }
+      }
+    }
+  },
+  "settings": {
+    "analysis": {
+      "filter": {
+        "ngram_filter": {
+          "type": "ngram",
+          "min_gram": 2,
+          "max_gram": 20
+        }
+      },
+      "analyzer": {
+        "ngram_index": {
+          "type": "custom",
+          "tokenizer": "keyword",
+          "filter": ["lowercase", "ngram_filter"]
+        },
+        "ngram_search": {
+          "type": "custom",
+          "tokenizer": "keyword",
+          "filter": "lowercase"
+        }
+      }
+    }
+  }
+}
