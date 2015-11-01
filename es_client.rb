@@ -41,36 +41,49 @@ def query_body(term)
     "highlight" => {
       "fields" => {"*" => {}}
     }
-  }
+  }.to_json
 end
 
-def get_term_counts(term)
+def msearch(terms, request_body)
+  responses = EsClient.post("/_msearch", body: request_body)
+  raise "Something went wrong with the query" unless responses.code == 200
+  responses["responses"].each_with_index do |response, ind|
+    parse_response(terms[ind], response)
+  end
+end
+
+def parse_response(term, response)
   document_hits = 0
   field_hits = Hash.new(0)
-  res = EsClient.post("#{INDEX_URL}/_search", body: query_body(term).to_json)
-  document_hits = res["hits"]["hits"].count
-  res["hits"]["hits"].each do |hit|
+  document_hits = response["hits"]["hits"].count
+  response["hits"]["hits"].each do |hit|
     hit["highlight"].each do |field, values|
       field_hits[field] += values.count
     end
   end
   puts "*********** Query term: #{term} **********"
-  puts "Field hits: "
+  puts "Field hits: " unless field_hits.empty?
   field_hits.each do |field, count|
     puts "  #{field} => #{count}"
   end
-  total_field_hits = field_hits.values.reduce(&:+)
+  total_field_hits = field_hits.empty?? 0 : field_hits.values.reduce(&:+)
   puts "Document hits: #{document_hits}"
   puts "Total field hits: #{total_field_hits}"
 end
 
-def query_terms
-  terms = YAML.load_file("data.yml")["terms"]
+def multi_search(terms)
+  queries = []
+  index_query = { "index" => "library" }
   terms.each do |term|
-    get_term_counts(term)
+    queries << index_query.to_json
+    queries << query_body(term)
   end
+  formatted_queries = queries.join("\n")
+  formatted_queries += "\n"
+  msearch(terms, formatted_queries) 
 end
 
 populate_data
 sleep 5
-query_terms
+terms = YAML.load_file("data.yml")["terms"]
+multi_search(terms)
