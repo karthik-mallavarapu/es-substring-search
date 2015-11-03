@@ -47,6 +47,7 @@ end
 def query_constant_score(term)
   return {
     "size" => 100,
+    "_source" => false,
     "query" => {
       "constant_score" => {
         "query" => {
