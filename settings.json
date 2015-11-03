@@ -1,18 +1,21 @@
 {
   "mappings": {
-    "books": {
+    "email": {
       "properties": {
-        "title": {
+        "sender": {
+          "type": "string",
+          "index": "not_analyzed"
+        },
+        "to": {
+          "type": "string",
+          "index": "not_analyzed"
+        },
+        "subject": {
           "type": "string",
           "index_analyzer": "ngram_index",
           "search_analyzer": "ngram_search"
         },
-        "description": {
-          "type": "string",
-          "index_analyzer": "ngram_index",
-          "search_analyzer": "ngram_search"
-        },
-        "author": {
+        "text": {
           "type": "string",
           "index_analyzer": "ngram_index",
           "search_analyzer": "ngram_search"
