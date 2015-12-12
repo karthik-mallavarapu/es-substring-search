@@ -1,0 +1,4 @@
+index_url: '/demo_index'
+type: 'demo_type'
+data: 'sample_data/demo1.csv'
+mapping: 'sample_data/settings.json'
