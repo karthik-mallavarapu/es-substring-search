@@ -9,7 +9,6 @@ class EsClient
 
   class HttpClient
     include HTTParty
-    base_uri "http://localhost:9200"
     headers "Accept" => "application/json"
   end
 
@@ -22,6 +21,7 @@ class EsClient
     @parser = DataParser.new(config['data'])
     @mapping = File.read(config['mapping'])
     @settings = {"settings" => {"number_of_shards" => 1, "number_of_replicas" => 0}}
+    HttpClient.base_uri config['es_host']
   end
 
   def create_index

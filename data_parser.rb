@@ -2,7 +2,7 @@
 class DataParser
   def initialize(filepath)
     @filepath = filepath
-    @csv = CSV.read(filepath, headers: true)
+    @csv = CSV.read(filepath, headers: true, converters: :all)
   end
 
   # Returns header fields as an array.

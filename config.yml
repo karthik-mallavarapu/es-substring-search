@@ -1,3 +1,4 @@
+es_host: 'search-demo-srlraiy5ym3njnndctzrk275du.us-west-2.es.amazonaws.com'
 index_url: '/demo_index'
 type: 'demo_type'
 data: 'sample_data/demo1.csv'
