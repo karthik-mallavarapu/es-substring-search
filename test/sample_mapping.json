@@ -1,0 +1,21 @@
+{
+  "mappings": {
+    "purchase": {
+      "properties": {
+        "product_id": {
+          "type": "long"
+        },
+        "product_name": {
+          "type": "string",
+          "analyzer": "ngram_analyzer"
+        },
+        "price": {
+          "type": "float"
+        },
+        "purchase_date": {
+          "type": "date"
+        }
+      }
+    }
+  }
+}
