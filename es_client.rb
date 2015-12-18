@@ -4,6 +4,7 @@ require 'json'
 require 'pry'
 require 'csv'
 require_relative 'data_parser'
+require_relative 'util_constants'
 
 class EsClient
 
@@ -20,7 +21,7 @@ class EsClient
     @type = config['type']
     @parser = DataParser.new(config['data'])
     @mapping = File.read(config['mapping'])
-    @settings = {"settings" => {"number_of_shards" => 1, "number_of_replicas" => 0}}
+    @settings = {}
     HttpClient.base_uri config['es_host']
   end
 
@@ -38,5 +39,18 @@ class EsClient
       raise "Data index failure" unless (res.code == 201 || res.code == 200)
     end
     puts "Data successfully populated"
+  end
+
+  private
+
+  def index_settings(shard_count)
+    setting["settings"] = {
+      "number_of_shards" => 1,
+      "number_of_replicas" => 0,
+      "analysis" => {
+        "filter" => UtilConstants::NGRAM_FILTER,
+        "analyzer" => UtilConstants::ANALYZER
+      }
+    }
   end
 end
