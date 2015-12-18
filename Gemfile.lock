@@ -10,6 +10,7 @@ GEM
     i18n (0.7.0)
     json (1.8.3)
     method_source (0.8.2)
+    minitest (5.8.3)
     multi_xml (0.5.5)
     pry (0.10.3)
       coderay (~> 1.1.0)
@@ -23,6 +24,7 @@ PLATFORMS
 DEPENDENCIES
   faker
   httparty
+  minitest
   pry
 
 BUNDLED WITH
