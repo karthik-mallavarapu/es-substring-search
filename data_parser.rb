@@ -17,4 +17,9 @@ class DataParser
       yield(row) if block_given?
     end
   end
+
+  def get_field_types
+    data_row = @csv.first.to_h
+    data_row.map { |field, value| [field, value.class.to_s] }.to_h
+  end
 end

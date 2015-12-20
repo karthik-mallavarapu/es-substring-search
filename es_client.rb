@@ -5,6 +5,7 @@ require 'pry'
 require 'csv'
 require_relative 'data_parser'
 require_relative 'util_constants'
+require_relative 'mapping_builder'
 
 class EsClient
 
@@ -18,11 +19,12 @@ class EsClient
   def initialize(config_file)
     config = YAML.load_file(config_file)
     @index_url = config['index_url']
-    @type = config['type']
-    @parser = DataParser.new(config['data'])
+    @type = get_file_name(config['data_file'])
+    @parser = DataParser.new(config['data_file'])
     @mapping = File.read(config['mapping'])
     @settings = {}
     HttpClient.base_uri config['es_host']
+    add_index_settings
   end
 
   def create_index
@@ -31,6 +33,14 @@ class EsClient
     res = HttpClient.post(index_url, body: settings.to_json)
     raise "Could not create index" if res.code != 200
     puts "Index successfully created"
+  end
+
+  def create_mapping
+    field_types = @parser.get_field_types
+    mapping = MappingBuilder.generate_mapping(field_types)
+    res = HttpClient.put("#{index_url}/_mapping/#{type}", body: mapping.to_json)
+    raise "Could not create mapping" unless res.code == 200
+    puts "Mapping for #{type} created successfully"
   end
 
   def populate_data
@@ -43,8 +53,13 @@ class EsClient
 
   private
 
-  def index_settings(shard_count)
-    setting["settings"] = {
+  def get_file_name(filepath)
+    extn = File.extname filepath
+    return File.basename filepath, extn
+  end
+
+  def add_index_settings
+    settings["settings"] = {
       "number_of_shards" => 1,
       "number_of_replicas" => 0,
       "analysis" => {

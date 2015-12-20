@@ -34,7 +34,6 @@ class TestMappingBuilder < Minitest::Test
   end
 
   def test_mapping_for_fields
-    doc_type = "purchase"
     fields = {
       "product_id" => "Fixnum",
       "product_name" => "String",
@@ -42,7 +41,7 @@ class TestMappingBuilder < Minitest::Test
       "purchase_date" => "Date"
     }
     expected_output = JSON.parse(File.read('test/sample_mapping.json'))
-    actual_output = MappingBuilder.generate_mapping(doc_type, fields)
+    actual_output = MappingBuilder.generate_mapping(fields)
     assert expected_output == actual_output
   end
 end
