@@ -1,5 +1,4 @@
-#es_host: 'search-demo-srlraiy5ym3njnndctzrk275du.us-west-2.es.amazonaws.com'
 es_host: 'http://localhost:9200'
 index_url: '/demo_index'
-data_file: 'sample_data/demo1.csv'
+data_file: 'sample_data/demo2.csv'
 mapping: 'sample_data/settings.json'

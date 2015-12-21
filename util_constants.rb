@@ -2,7 +2,7 @@ module UtilConstants
   NGRAM_FILTER = {
     "ngram_filter" => {
       "type" => "ngram",
-      "min_gram" => 3,
+      "min_gram" => 2,
       "max_gram" => 7
     }
   }
