@@ -6,13 +6,9 @@ require 'csv'
 require_relative 'data_parser'
 require_relative 'util_constants'
 require_relative 'mapping_builder'
+require_relative 'http_client'
 
 class EsClient
-
-  class HttpClient
-    include HTTParty
-    headers "Accept" => "application/json"
-  end
 
   attr_reader :index_url, :mapping, :settings, :type
 
@@ -22,6 +18,7 @@ class EsClient
     @type = get_file_name(config['data_file'])
     @parser = DataParser.new(config['data_file'])
     @mapping = File.read(config['mapping'])
+    @query_types = config['query_types']
     @settings = {}
     HttpClient.base_uri config['es_host']
     add_index_settings
