@@ -15,7 +15,13 @@ module MappingBuilder
     es_type = get_es_type(type)
     field_mapping = {}
     field_mapping["type"] = es_type
-    field_mapping["analyzer"] = "ngram_analyzer" if es_type == "string"
+    if es_type == "string"
+      field_mapping["type"] = "multi_field"
+      field_mapping["fields"] = {"raw" => {"type" => "string", 
+                                           "index" => "not_analyzed" },
+                                  "analyzed" => {"type" => "string",
+                                            "analyzer" => "ngram_analyzer" } }
+    end
     return field_mapping
   end
 

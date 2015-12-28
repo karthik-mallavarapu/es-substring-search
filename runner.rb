@@ -20,10 +20,11 @@ def parse_result(term, response)
   puts "Time taken: #{response['took']}"
 end
 
-#client = EsClient.new('config.yml')
-#client.create_index
-#client.create_mapping
-#client.populate_data
+client = EsClient.new('config.yml')
+client.create_index
+client.create_mapping
+client.populate_data
+=begin
 config = YAML.load_file('config.yml')
 data_files = config['query_types']
 # Query config
@@ -41,3 +42,4 @@ query_builder = QueryBuilder.new(field_types, query_config)
 HttpClient.base_uri config['es_host']
 res = HttpClient.post(query_builder.search_url, body: query_builder.constant_score_query.to_json)
 parse_result(query_term, res)
+=end

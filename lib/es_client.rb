@@ -36,7 +36,7 @@ class EsClient
     field_types = @parser.get_field_types
     mapping = MappingBuilder.generate_mapping(field_types)
     res = HttpClient.put("#{index_url}/_mapping/#{type}", body: mapping.to_json)
-    raise "Could not create mapping" unless res.code == 200
+    raise "Could not create mapping #{res.body}" unless res.code == 200
     puts "Mapping for #{type} created successfully"
   end
 
