@@ -22,4 +22,9 @@ class DataParser
     data_row = @csv.first.to_h
     data_row.map { |field, value| [field, value.class.to_s] }.to_h
   end
+
+  def filter_field_types(data_type)
+    all_field_types = get_field_types
+    all_field_types.select { |field, type| type == data_type }
+  end
 end

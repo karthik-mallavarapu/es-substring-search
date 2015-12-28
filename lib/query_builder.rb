@@ -3,13 +3,13 @@ class QueryBuilder
   attr_reader :doc_types, :index, :field_types, :query_string
 
   def initialize(field_types, config)
-    @field_types = field_types
     @index = config[:index]
     @doc_types = field_types.keys
     @query_string = config[:query]
+    @field_types = field_types
   end
 
-  def constant_score_query(source=false, size=100)
+  def constant_score_query(source=false, size=1000)
     request_body = {
       '_source' => source,
       'size' => size
